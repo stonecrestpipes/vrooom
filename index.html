@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<!-- Everything the game loads is its own; data: images are Phaser's built-in textures. -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+<meta name="theme-color" content="#0b0f2a" />
+<!-- Published unlisted: ask search engines not to index or follow. -->
+<meta name="robots" content="noindex, nofollow" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="Vrooom" />
+<link rel="manifest" href="./manifest.webmanifest" />
+<link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png" />
+<link rel="apple-touch-icon" href="./icon-192.png" />
+<title>Vrooom</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body {
+    width: 100%; height: 100%;
+    background: #05070f;
+    overflow: hidden;
+    touch-action: none;
+    -webkit-user-select: none; user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    overscroll-behavior: none;
+  }
+  #app { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; }
+  canvas { display: block; touch-action: none; }
+
+  /* First paint, before Phaser boots. Removed by main.ts once the game is up. */
+  #boot {
+    position: fixed; inset: 0; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 14px;
+    background: #0b0f2a; color: #4ad4ff;
+    font: 13px ui-monospace, Menlo, Consolas, monospace; letter-spacing: 2px;
+    transition: opacity .25s ease; z-index: 10;
+  }
+  #boot.done { opacity: 0; pointer-events: none; }
+  #boot .bar { width: 130px; height: 3px; background: #1b2352; overflow: hidden; }
+  #boot .bar i { display: block; width: 40%; height: 100%; background: #4ad4ff; animation: slide 1s infinite ease-in-out; }
+  @keyframes slide { 0% { transform: translateX(-100%); } 100% { transform: translateX(330%); } }
+
+  /* Landscape game. Portrait is playable but cramped, so say so rather than letterbox it. */
+  #turn {
+    position: fixed; inset: 0; display: none; flex-direction: column;
+    align-items: center; justify-content: center; gap: 12px; text-align: center;
+    background: #05070f; color: #8fa6cc;
+    font: 12px ui-monospace, Menlo, Consolas, monospace; letter-spacing: 2px;
+    padding: 24px; z-index: 20;
+  }
+  @media (orientation: portrait) and (max-width: 820px) { #turn { display: flex; } }
+</style>
+  <script type="module" crossorigin src="./assets/index-pzxe_4rz.js"></script>
+</head>
+<body>
+  <div id="app"></div>
+  <!-- Probe: lets the game read the device's real safe-area insets (notch, rounded
+       corners, gesture bar) instead of guessing at them. -->
+  <div id="safe-probe" style="position:fixed;top:0;left:0;width:0;height:0;visibility:hidden;
+       padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+       padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inset-right,0px);"></div>
+  <div id="boot"><div>VROOOM</div><div class="bar"><i></i></div></div>
+  <div id="turn"><div style="color:#4ad4ff">VROOOM</div><div>TURN THE PHONE SIDEWAYS</div></div>
+</body>
+</html>
